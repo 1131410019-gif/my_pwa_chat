@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<div style="text-align: center; margin-top: 50px;">
+    <h2>📝 Register</h2>
+    <input type="text" placeholder="Username"
+        style="padding:10px; margin:5px; width:80%; border-radius:8px; border:1px solid #ccc;"><br>
+    <input type="email" placeholder="Email"
+        style="padding:10px; margin:5px; width:80%; border-radius:8px; border:1px solid #ccc;"><br>
+    <input type="password" placeholder="Password"
+        style="padding:10px; margin:5px; width:80%; border-radius:8px; border:1px solid #ccc;"><br>
+    <button class="btn" style="background: var(--main); color:white; padding: 10px 20px; margin-top:15px;"
+        onclick="location.href='/login'">Sign Up</button>
+</div>
+{% endblock %}

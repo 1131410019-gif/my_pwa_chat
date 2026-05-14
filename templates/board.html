@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    /* 1. Make the page dark and clean */
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: #0f172a;
+        overflow-x: hidden;
+    }
+
+    /* 2. THE CENTERED CONTAINER - Fixed and inside the style tags now */
+    .dashboard-container {
+        display: flex;
+        gap: 30px;
+        align-items: flex-start;
+        width: 90%;
+        /* Dashboard fills 90% of screen width */
+        max-width: 1200px;
+        /* Keeps it centered and professional */
+        margin: 40px auto;
+        /* Magic auto centering */
+        box-sizing: border-box;
+    }
+
+    /* 3. Left Side: Fixed width for the form */
+    .left-panel {
+        flex: 0 0 400px;
+        position: sticky;
+        top: 40px;
+    }
+
+    /* 4. Right Side: Fills the remaining space */
+    .right-panel {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* 5. Styling for the Post Box and Timeline Cards */
+    .post-input-container {
+        background: #1e2530;
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    }
+
+    .post-input-container h2 {
+        color: white;
+        margin-bottom: 20px;
+        font-size: 1.8rem;
+    }
+
+    .post-input-container textarea {
+        width: 100%;
+        background: #161b22;
+        border: 1px solid #30363d;
+        border-radius: 12px;
+        padding: 20px;
+        color: white;
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+        resize: vertical;
+    }
+
+    .post-card {
+        background: #1e2530;
+        border-radius: 15px;
+        padding: 30px;
+        margin-bottom: 25px;
+        color: white;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .post-card p {
+        font-size: 1.15rem;
+        line-height: 1.6;
+    }
+
+    .submit-btn {
+        background: #4cc9f0;
+        color: #fff;
+        border: none;
+        padding: 15px 25px;
+        border-radius: 12px;
+        font-weight: bold;
+        font-size: 1.1rem;
+        cursor: pointer;
+        width: 100%;
+        transition: transform 0.2s, background 0.2s;
+    }
+
+    .submit-btn:hover {
+        background: #3eb8db;
+        transform: translateY(-2px);
+    }
+</style>
+
+<div class="dashboard-container">
+    <div class="left-panel">
+        <div class="post-input-container">
+            <h2>發佈新留言</h2>
+            <form action="/add_post" method="POST">
+                <p style="color: #8b949e; font-size: 1rem; margin-bottom: 15px;">分享你的心情...</p>
+                <textarea name="content" rows="6" placeholder="今天想說些什麼？" required></textarea>
+
+                <div style="margin-bottom: 20px;">
+                    <label style="color: white; display: block; margin-bottom: 8px;">選擇心情</label>
+                    <select name="mood"
+                        style="width: 100%; padding: 12px; border-radius: 8px; background: #161b22; color: white; border: 1px solid #30363d; font-size: 1rem;">
+                        {% for mood in moods %}
+                        <option value="{{ mood }}">{{ mood }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <button type="submit" class="submit-btn">發佈留言</button>
+                <button type="button"
+                    style="width: 100%; margin-top: 15px; background: transparent; color: #8b949e; border: 1px solid #30363d; padding: 12px; border-radius: 10px; cursor: pointer;">帳號設定</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="right-panel">
+        <h2 style="color: white; margin-bottom: 25px; font-size: 1.8rem; padding-left: 10px;">即時動態</h2>
+
+        {% for p in posts %}
+        <div class="post-card">
+            <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 15px;">
+                <img src="{{ p.avatar }}"
+                    style="width: 55px; height: 55px; border-radius: 50%; border: 2px solid #30363d;">
+                <div>
+                    <strong style="display: block; font-size: 1.2rem;">{{ p.username }}</strong>
+                    <small style="color: #8b949e;">2026-05-14 16:40</small>
+                </div>
+            </div>
+            <p>{{ p.text }}</p>
+            <div
+                style="margin-top: 20px; border-top: 1px solid #30363d; padding-top: 15px; display: flex; align-items: center; justify-content: space-between;">
+                <span
+                    style="background: #2a3341; padding: 6px 16px; border-radius: 20px; font-size: 0.9rem; color: #4cc9f0; border: 1px solid rgba(76, 201, 240, 0.3);">
+                    {{ p.mood }}
+                </span>
+                <span style="color: #4cc9f0; font-weight: bold; cursor: pointer;">👍 {{ p.likes }} Likes</span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
